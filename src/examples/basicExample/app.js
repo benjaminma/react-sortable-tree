@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import SortableTree, { toggleExpandedForAll } from '../../index';
+import SortableTree, { toggleExpandedForAll, insertNode, defaultGetNodeKey } from '../../index';
+import { Map } from 'immutable';
 import styles from './stylesheets/app.scss';
 import '../shared/favicon/apple-touch-icon.png';
 import '../shared/favicon/favicon-16x16.png';
@@ -147,6 +148,7 @@ class App extends Component {
     this.updateTreeData = this.updateTreeData.bind(this);
     this.expandAll = this.expandAll.bind(this);
     this.collapseAll = this.collapseAll.bind(this);
+    this.addTreeNode = this.addTreeNode.bind(this);
   }
 
   updateTreeData(treeData) {
@@ -170,8 +172,28 @@ class App extends Component {
     this.expand(false);
   }
 
+  addTreeNode() {
+    const newItem = {
+      node: {
+        title: 'new node',
+        children: []
+      },
+      depth: 0,
+      minimumTreeIndex: 0
+    };
+    const {treeData} = insertNode({
+        treeData: this.state.treeData,
+        newNode: newItem.node,
+        depth: newItem.depth,
+        minimumTreeIndex: newItem.minimumTreeIndex,
+        expandParent: true,
+        getNodeKey: defaultGetNodeKey,
+    });
+    this.setState({ treeData });
+  }
+
   render() {
-    const projectName = 'React Sortable Tree';
+    const projectName = 'Player View Manifester';
     const authorName = 'Chris Fritz';
     const authorUrl = 'https://github.com/fritz-c';
     const githubUrl = 'https://github.com/fritz-c/react-sortable-tree';
@@ -211,20 +233,20 @@ class App extends Component {
       });
 
     const isVirtualized = true;
-    const treeContainerStyle = isVirtualized ? { height: 450 } : {};
+    const treeContainerStyle = isVirtualized ? { height: 590 } : {};
 
     return (
       <div>
         <section className={styles['page-header']}>
           <h1 className={styles['project-name']}>{projectName}</h1>
 
-          <h2 className={styles['project-tagline']}>
+          {/*<h2 className={styles['project-tagline']}>
             Drag-and-drop sortable representation of hierarchical data
-          </h2>
+          </h2>*/}
         </section>
 
         <section className={styles['main-content']}>
-          <h3>Demo</h3>
+          {/*<h3>Demo</h3>*/}
 
           <button onClick={this.expandAll}>
             Expand All
@@ -232,6 +254,10 @@ class App extends Component {
 
           <button onClick={this.collapseAll}>
             Collapse All
+          </button>
+
+          <button onClick={this.addTreeNode}>
+            Add Node
           </button>
 
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -319,9 +345,9 @@ class App extends Component {
             />
           </div>
 
-          <a href={githubUrl}>Documentation on Github</a>
+          {/*<a href={githubUrl}>Documentation on Github</a>*/}
 
-          <footer className={styles['site-footer']}>
+          {/*<footer className={styles['site-footer']}>
             <span className={styles['site-footer-owner']}>
               <a href={githubUrl}>{projectName}</a> is maintained by{' '}
               <a href={authorUrl}>{authorName}</a>.
@@ -335,17 +361,17 @@ class App extends Component {
               </a>{' '}
               by <a href="https://twitter.com/jasonlong">Jason Long</a>.
             </span>
-          </footer>
+          </footer>*/}
         </section>
 
-        <a href={githubUrl}>
+        {/*<a href={githubUrl}>
           <img
             style={{ position: 'absolute', top: 0, right: 0, border: 0 }}
             src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
             alt="Fork me on GitHub"
             data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
           />
-        </a>
+        </a>*/}
       </div>
     );
   }
